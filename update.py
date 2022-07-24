@@ -72,10 +72,9 @@ if __name__=="__main__":
         if JSON[pubIdx]["preprint_url"] != "#":
             outFile.write("<a href=\"{}\">Preprint (PDF)</a> | ".format(JSON[pubIdx]["preprint_url"]))
 
-        # if JSON[pubIdx]["doi"]!="#":
-        #     outFile.write("<a href=\"https://doi.org/{}\">{}</a> | ".format(JSON[pubIdx]["doi"],JSON[pubIdx]["doi"]))
+
         if JSON[pubIdx]["doi"]!="#":
-            outFile.write("<a href=\"https://doi.org/{}\">DOI</a> | ".format(JSON[pubIdx]["doi"]))
+            outFile.write("<a href=\"{}\">DOI</a> | ".format(JSON[pubIdx]["doi"]))
 
 
         outFile.write("<a href=\"{}\">Edit this entry</a>.<br>".format(JSON[pubIdx]["api_url"].replace("https://api.ce.pdn.ac.lk/publications/","https://github.com/cepdnaclk/api.ce.pdn.ac.lk/tree/main/publications/")+"index.json"))
