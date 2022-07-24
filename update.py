@@ -49,8 +49,6 @@ if __name__=="__main__":
 
 
     for pubIdx in range(len(JSON)):
-        print(pubIdx)
-        print(JSON[pubIdx])
 
         outFile.write("<tr>")
         outFile.write("<td style=\"vertical-align:top\">{}. </td><td>".format(pubIdx+1))
@@ -72,13 +70,15 @@ if __name__=="__main__":
         outFile.write("<i>{}</i> ({})<br>".format(JSON[pubIdx]["venue"],JSON[pubIdx]["year"]))
 
         if JSON[pubIdx]["pdf_url"] != "#":
-            outFile.write("<a href=\"{}\">PDF</a>, ".format(JSON[pubIdx]["pdf_url"]))
+            outFile.write("<a href=\"{}\">PDF</a> | ".format(JSON[pubIdx]["pdf_url"]))
         
         if JSON[pubIdx]["preprint_url"] != "#":
-            outFile.write("<a href=\"{}\">Preprint (PDF)</a>, ".format(JSON[pubIdx]["preprint_url"]))
+            outFile.write("<a href=\"{}\">Preprint (PDF)</a> | ".format(JSON[pubIdx]["preprint_url"]))
 
         if JSON[pubIdx]["doi"]!="#":
-            outFile.write("<a href=\"https://doi.org/{}\">{}</a><br>".format(JSON[pubIdx]["doi"],JSON[pubIdx]["doi"]))
+            outFile.write("<a href=\"https://doi.org/{}\">{}</a> | ".format(JSON[pubIdx]["doi"],JSON[pubIdx]["doi"]))
+
+        outFile.write("<a href=\"{}\">Edit this entry</a>.<br>".format(JSON[pubIdx]["api_url"].replace("https://api.ce.pdn.ac.lk/publications/","https://github.com/cepdnaclk/api.ce.pdn.ac.lk/tree/main/publications/")+"index.json"))
 
         outFile.write("<br><br>")
 
@@ -86,5 +86,5 @@ if __name__=="__main__":
         outFile.write("</td></tr>")
 
 
-
+        print("Completed publication {} of {} total publications".format(pubIdx+1,len(JSON)))
     outFile.write("</table><br><hr>Last updated: {} (Sri Lanka time)</body></html>".format(datetime.datetime.now(timezone("Asia/Kolkata")).strftime("%Y-%m-%d %H:%M:%S")))
