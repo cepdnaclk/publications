@@ -15,7 +15,8 @@ if __name__=="__main__":
 
     response = requests.get(args.url)
     JSON = response.json()
-    JSON = sorted(JSON, key=lambda k: k['year'],reverse=True)
+    JSON = sorted(JSON, key=lambda k: "{}{}".format(5000-int(k['year']),k["title"]),reverse=False)
+    #Reversse chronological order is how publications are usually sorted on webpages. Sorting by title (lexographic order) is done so it is easy to spot duplicates.
 
 
 
