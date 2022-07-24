@@ -54,10 +54,7 @@ if __name__=="__main__":
         outFile.write("<td style=\"vertical-align:top\">{}. </td><td>".format(pubIdx+1))
 
         outFile.write("<b>{}</b><br>".format(JSON[pubIdx]["title"]))
-        print(len(JSON[pubIdx]["author_info"]))
-        print(JSON[pubIdx]["author_info"])
-        print(len(JSON[pubIdx]["authors"]))
-        print(JSON[pubIdx]["authors"])
+
         if len(JSON[pubIdx]["authors"]) != len(JSON[pubIdx]["author_info"]):
             outFile.write("<font color=\"red\">Error in author info: Length mismatch. Edit the Json file <a href=\"{}\">here</a>.</font><br>".format(JSON[pubIdx]["api_url"].replace("https://api.ce.pdn.ac.lk/publications/","https://github.com/cepdnaclk/api.ce.pdn.ac.lk/tree/main/publications/")+"index.json"))
  
