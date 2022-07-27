@@ -45,7 +45,7 @@ if __name__=="__main__":
     for pubIdx in range(len(JSON)):
 
         outFile.write("\t\t\t\t<tr>\n")
-        outFile.write("\t\t\t\t\t<td style=\"vertical-align:top\">{}. </td><td>".format(pubIdx+1))
+        outFile.write("\t\t\t\t\t<td style=\"vertical-align:top\">{}. </td><td>".format(len(JSON) - pubIdx))
 
         outFile.write("<b>{}</b><br>".format(JSON[pubIdx]["title"]))
 
