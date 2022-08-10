@@ -26,16 +26,31 @@ if __name__=="__main__":
     <head>
         <title>Publications</title>
         <link rel="stylesheet" href="./styles.css">
+        <script>
+            function highlight(){
+                try {
+                    var pubBookmarkFormURL=window.location.hash.substr(1);
+                    document.getElementsByTagName("tr")[pubBookmarkFormURL].setAttribute("style", "background-color:#ADD8E6");
+                }
+                catch(err){
+                    //Do nothing
+                }
+
+            }
+        </script>
+
+
     </head>
-    <body>
+    <body onload="javascript:highlight()">
         <h1>Publications from the Department of Computer Engineering, University of Peradeniya</h1>
         <hr>
 
         <ul>
             <li>The source code for this webpage is <a href="https://github.com/cepdnaclk/publications">here</a></li>
-            <li>If a publication is missing, please add it using <a href="https://forms.gle/rT6Bt8JPzoMz4qGM9">this</a> form.</li>
+            <li>If you want to add a missing publication or update an existing publication, please submit it using <a href="https://forms.gle/rT6Bt8JPzoMz4qGM9">this</a> form.</li>
             <li>This webpage is based on the University of Peradeniya, Department of Computer Engineering <a href="https://api.ce.pdn.ac.lk/">API</a>.</li>
             <li>If you have any doubts, please reach out to the maintainers listed <a href="https://github.com/orgs/cepdnaclk/teams/admins-cepdnaclk-github-io/members">here</a>. If you are not a member of the Github organization to view that link, please reach out to <a href="https://people.ce.pdn.ac.lk/students/e17/154/">Akila</a>. If everything else fails, reach out to <a href="https://people.ce.pdn.ac.lk/staff/academic/roshan-ragel/">Prof. Roshan Ragel</a>.</li>
+            <li>We are looking for volunteers to make a better looking version of this webpage. If you are interested, please reach out to these <a href="https://projects.ce.pdn.ac.lk/contact/">contacts</a>.</li>
         </ul>
 
 
@@ -43,8 +58,11 @@ if __name__=="__main__":
 ''')
 
     for pubIdx in range(len(JSON)):
+        bookmark = JSON[pubIdx]["doi"].replace("https://doi.org/","").replace("/","_").strip()
 
-        outFile.write("\t\t\t\t<tr>\n")
+        # print(JSON[pubIdx])
+
+        outFile.write("\t\t\t\t<tr id={}>\n".format(bookmark))
         outFile.write("\t\t\t\t\t<td style=\"vertical-align:top\">{}. </td><td>".format(len(JSON) - pubIdx))
 
         outFile.write("<b>{}</b><br>".format(JSON[pubIdx]["title"]))
@@ -60,16 +78,28 @@ if __name__=="__main__":
 
         outFile.write("\n\t\t\t\t\t"+"<i>{}</i> ({})<br>".format(JSON[pubIdx]["venue"],JSON[pubIdx]["year"]))
         outFile.write("\n\t\t\t\t\t")
-        if JSON[pubIdx]["pdf_url"] != "#":
-            outFile.write("<a href=\"{}\">PDF</a> | ".format(JSON[pubIdx]["pdf_url"]))
-        
-        if JSON[pubIdx]["preprint_url"] != "#":
-            outFile.write("<a href=\"{}\">Preprint (PDF)</a> | ".format(JSON[pubIdx]["preprint_url"]))
+
 
 
         if JSON[pubIdx]["doi"]!="#":
             outFile.write("<a href=\"{}\">DOI</a> | ".format(JSON[pubIdx]["doi"]))
 
+        if JSON[pubIdx]["pdf_url"] != "#":
+            outFile.write("<a href=\"{}\">PDF (Open access)</a> | ".format(JSON[pubIdx]["pdf_url"]))
+        
+        if JSON[pubIdx]["preprint_url"] != "#":
+            outFile.write("<a href=\"{}\">PDF (Preprint)</a> | ".format(JSON[pubIdx]["preprint_url"]))
+
+        if JSON[pubIdx]["codebase"] != "#":
+            outFile.write("<a href=\"{}\">github</a> | ".format(JSON[pubIdx]["codebase"]))
+
+        if JSON[pubIdx]["project_url"] != "#":
+            outFile.write("<a href=\"{}\">Project page</a> | ".format(JSON[pubIdx]["project_url"]))
+
+        if JSON[pubIdx]["presentation_url"] != "#":
+            outFile.write("<a href=\"{}\">Presentation</a> | ".format(JSON[pubIdx]["presentation_url"]))
+        
+        outFile.write("<a href=\"./#{}\">Bookmark</a> | ".format(bookmark))
 
         outFile.write("<a href=\"{}\">Edit this entry</a>.<br>".format(JSON[pubIdx]["api_url"].replace("https://api.ce.pdn.ac.lk/publications/","https://github.com/cepdnaclk/api.ce.pdn.ac.lk/tree/main/publications/")+"index.json"))
 
