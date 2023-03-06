@@ -69,12 +69,21 @@ if __name__=="__main__":
 
         if len(JSON[pubIdx]["authors"]) != len(JSON[pubIdx]["author_info"]):
             outFile.write("\n\t\t\t\t\t"+"<font color=\"red\">Error in author info: Length mismatch. Edit the Json file <a href=\"{}\">here</a>.</font><br>".format(JSON[pubIdx]["api_url"].replace("https://api.ce.pdn.ac.lk/publications/","https://github.com/cepdnaclk/api.ce.pdn.ac.lk/tree/main/publications/")+"index.json"))
- 
-        outFile.write("\n\t\t\t\t\t"+", ".join(JSON[pubIdx]["authors"]))
-        outFile.write("<br>")
+        else:
+            authorList = []
+            for aIdx in range(len(JSON[pubIdx]["authors"])):
+                if JSON[pubIdx]["author_info"][aIdx]["type"]=="OUTSIDER":
+                    authorList.append(JSON[pubIdx]["authors"][aIdx])
+                else:
+                    authorList.append("<a href=\"{}\">{}</a>".format(JSON[pubIdx]["author_info"][aIdx]["profile_url"],JSON[pubIdx]["authors"][aIdx]))
         
-        outFile.write("\n\t\t\t\t\t"+", ".join("<a href=\"{}\">{}</a>".format(aa["profile_url"],aa["name"]) for aa in JSON[pubIdx]["author_info"]))
-        outFile.write("<br>")
+            outFile.write("\n\t\t\t\t\t"+", ".join(authorList))
+            outFile.write("<br>")
+        # outFile.write("\n\t\t\t\t\t" + ", ".join(JSON[pubIdx]["authors"]))
+        # outFile.write("<br>")
+        
+        # outFile.write("\n\t\t\t\t\t"+", ".join("<a href=\"{}\">{}</a>".format(aa[1]["profile_url"],aa[0]) for aa in zip(JSON[pubIdx]["authors"],JSON[pubIdx]["author_info"])))
+        # outFile.write("<br>")
 
         outFile.write("\n\t\t\t\t\t"+"<i>{}</i> ({})<br>".format(JSON[pubIdx]["venue"],JSON[pubIdx]["year"]))
         outFile.write("\n\t\t\t\t\t")
