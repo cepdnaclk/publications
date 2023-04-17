@@ -24,6 +24,7 @@ if __name__=="__main__":
     outFile.write('''
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Publications</title>
         <link rel="stylesheet" href="./styles.css">
         <script>
@@ -56,6 +57,19 @@ if __name__=="__main__":
 
         <table>
 ''')
+    
+    # deptAffiliatedPubs = 0
+    # externAffiliatedPubs = 0
+    # print(JSON[0])
+    # for pubIdx in range(len(JSON)):
+    #     print(JSON[pubIdx]["is_dept_affiliated"])
+    #     if JSON[pubIdx]["is_dept_affiliated"]:
+    #         deptAffiliatedPubs+=1
+    #     else:
+    #         externAffiliatedPubs+=1
+    # print(deptAffiliatedPubs,externAffiliatedPubs)
+
+
 
     for pubIdx in range(len(JSON)):
         bookmark = JSON[pubIdx]["doi"].replace("https://doi.org/","").replace("/","_").strip()
@@ -64,7 +78,8 @@ if __name__=="__main__":
 
         outFile.write("\t\t\t\t<tr id={}>\n".format(bookmark))
         outFile.write("\t\t\t\t\t<td style=\"vertical-align:top\">{}. </td><td>".format(len(JSON) - pubIdx))
-
+        if(not JSON[pubIdx]["is_dept_affiliated"]):
+            outFile.write("<font color=\"red\">Not affiliated with the department. This publication will be hidden in the final implementation.</font><br>\n")
         outFile.write("<b>{}</b><br>".format(JSON[pubIdx]["title"]))
 
         if len(JSON[pubIdx]["authors"]) != len(JSON[pubIdx]["author_info"]):
