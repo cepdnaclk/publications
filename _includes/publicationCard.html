@@ -1,8 +1,10 @@
 {% assign pub = include.data %}
+{% assign doi_id = %}
+{% assign doi_id = p.doi | replace: "https://doi.org/", "" | replace: "/", "_" %}
 
 <div class="my-1 p-0 pb-4">
     <div class="row g-0">
-        <div class="container">
+        <div class="container" id="{{ doi_id }}">
             {%- if p.is_dept_affiliated == false -%}
             <div class="alert alert-danger p-1 px-2 mb-1" role="alert">
                 Not affiliated with the department. This publication will be hidden in the final
@@ -11,7 +13,21 @@
             {%- endif -%}
 
             <div class="clearfix">
-                <b><span class="text-primary">{{ pub.title }}</span></b><br>
+
+                <div class="row pt-2">
+                    <div class="col d-flex flex-wrap">
+                        <b><span class="text-primary">{{ pub.title }}</span></b><br>
+                    </div>
+                    <div class="col-1">
+                        <span onclick="addBookmark('{{ pub.title }}', '{{ doi_id }}')" class="ms-2 text-secondary">
+                            <i class="fa fa-bookmark"></i>
+                        </span>
+
+                        <a href="{{ pub.edit_url }}" class="ms-2 text-secondary" target="_blank">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
 
                 <!-- Author list -->
                 <div>
@@ -62,13 +78,6 @@
                     <a class="btn-link me-2" href="{{ pub.codebase }}" target="_blank">[ Codebase ]</a>
                     {%- endif -%}
                 </div>
-
-                <div class="col-1">
-                    <a href="{{ pub.edit_url }}" class="ms-2 text-secondary" target="_blank">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                </div>
-
             </div>
 
             {%- if pub.tags -%}
