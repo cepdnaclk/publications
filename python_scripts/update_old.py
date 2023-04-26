@@ -8,7 +8,7 @@ from pytz import timezone
 if __name__=="__main__":
     args = argparse.ArgumentParser()
     args.add_argument("--url", type=str,default="https://api.ce.pdn.ac.lk/publications/v1/all/")
-    args.add_argument("--outputFile", type=str,default="index.html")
+    args.add_argument("--outputFile", type=str,default="../index_old.html")
 
 
     args = args.parse_args()
