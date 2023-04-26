@@ -1,0 +1,28 @@
+---
+layout: default
+title: "Sitemap"
+permalink: /sitemap/
+---
+
+<div class="bg-secondary p-3 pb-1 rounded">
+    <h1 class="text-white">{{ page.title }}</h1>
+    <nav aria-label="breadcrumb page-breadcrumb">
+        <ol class="breadcrumb page-breadcrumb">
+            <li class="breadcrumb-item"><a href="{% link pages/index.html %}" class="link-light">Home</a></li>
+            <li class="breadcrumb-item text-white">
+                {{ page.title }}
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="container p-3 pt-4">
+
+    {% include page_tree_builder.html pages=site.html_pages -%}
+
+    <div class="container pb-3">
+        <ul>
+            <li><a href="{{ '/' | relative_url }}">Publications</a></li>
+        </ul>
+    </div>
+</div>

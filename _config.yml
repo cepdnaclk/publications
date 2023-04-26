@@ -1,0 +1,69 @@
+# This theme is based on https://github.com/jekyll/minima
+# Please refer above link to know the available configurations
+
+title: "Publications - ce.pdn.ac.lk"
+baseurl: "/publications"
+
+author:
+  name: Department of Computer Engineering
+  email: ""
+
+description: ""
+
+minima:
+  date_format: "%b %-d, %Y"
+
+plugins:
+ - jekyll-seo-tag
+ - jekyll-sitemap
+
+# Google Analytics Tracking (optional)
+ga_tracking: "G-ZD34QKPBLL"
+ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
+
+# Edit on GitHub button
+gh_edit_link: false # show or hide edit this page link
+gh_edit_link_text: "Edit this page on GitHub"
+gh_edit_repository: "https://github.com/cepdnaclk/publications" # the github URL for your repo
+gh_edit_branch: "main" # the branch that your docs is served from
+
+permalink: pretty
+exclude:
+  [
+    "node_modules/",
+    "*.gemspec",
+    "*.gem",
+    "Gemfile",
+    "Gemfile.lock",
+    "package.json",
+    "package-lock.json",
+    "script/",
+    "LICENSE.txt",
+    "lib/",
+    "bin/",
+    "README.md",
+    "Rakefile",
+    "graphic_templates",
+    "*.py",
+    "*.sh",
+    "*.yml"
+  ]
+
+markdown: kramdown
+
+kramdown:
+  parse_block_html: true
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+# Guideline:https://www.digitalocean.com/community/tutorials/jekyll-compress-html0
+compress_html:
+  clippings: all
+  comments: all
+  endings: []
+  startings: []
+  blanklines: true
+  profile: false
+  # ignore:
+  #   envs: all

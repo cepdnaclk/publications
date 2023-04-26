@@ -1,0 +1,39 @@
+---
+layout: default
+permalink: "/"
+title: "Publications - ce.pdn.ac.lk"
+---
+
+<h2 class="text-center pb-2">
+    Publications from the Department of Computer Engineering <br>
+    <small>University of Peradeniya</small>
+</h2>
+
+<div class="container p-2 card " style="background-color: lightgray;">
+    <ul>
+        <li>The source code for this webpage is <a href="https://github.com/cepdnaclk/publications">here</a>
+        </li>
+        <li>If you want to add a missing publication or update an existing publication, please submit it using
+            <a href="https://forms.gle/rT6Bt8JPzoMz4qGM9">this</a> form.
+        </li>
+        <li>This webpage is based on the University of Peradeniya, Department of Computer Engineering
+            <a href="https://api.ce.pdn.ac.lk/">API</a>.
+        </li>
+        <li>If you have any doubts, please reach out to the maintainers listed
+            <a href="https://github.com/orgs/cepdnaclk/teams/admins-cepdnaclk-github-io/members">here</a>.
+            If you are not a member of the Github organization to view that link, please reach out to
+            <a href="https://people.ce.pdn.ac.lk/students/e17/154/">Akila</a>.
+            If everything else fails, reach out to <a href="https://people.ce.pdn.ac.lk/staff/academic/roshan-ragel/">
+                Prof. Roshan Ragel</a>.
+        </li>
+        <li>We are looking for volunteers to make a better looking version of this webpage. If you are
+            interested, please reach out to these <a href="https://projects.ce.pdn.ac.lk/contact/">contacts</a>.
+        </li>
+    </ul>
+</div>
+
+<div class="container pt-4">
+    {%- for p in site.data.publications -%}
+    {%- include publicationCard.html data=p title=p.title -%}
+    {%- endfor -%}
+</div>
