@@ -18,6 +18,7 @@ plugins:
  - jekyll-sitemap
 
 # Google Analytics Tracking (optional)
+google_analytics: true
 ga_tracking: "G-ZD34QKPBLL"
 ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
 
