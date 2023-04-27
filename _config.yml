@@ -19,7 +19,7 @@ plugins:
 
 # Google Analytics Tracking (optional)
 google_analytics: true
-ga_tracking: "G-ZD34QKPBLL"
+ga_tracking: "G-10YPVZG432"
 ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
 
 # Edit on GitHub button
