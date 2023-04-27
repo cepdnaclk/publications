@@ -9,6 +9,8 @@ title: "Publications - ce.pdn.ac.lk"
     <small>University of Peradeniya</small>
 </h2>
 
+
+
 <div class="container p-2 card " style="background-color: lightgray;">
     <ul>
         <li>The source code for this webpage is <a href="https://github.com/cepdnaclk/publications">here</a>
@@ -36,4 +38,15 @@ title: "Publications - ce.pdn.ac.lk"
     {%- for p in site.data.publications -%}
     {%- include publicationCard.html data=p title=p.title -%}
     {%- endfor -%}
+</div>
+
+<!-- Bookmark notiication toast -->
+<div class="position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toast-message"></div>
+    </div>
 </div>
