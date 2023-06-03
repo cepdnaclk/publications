@@ -1,0 +1,157 @@
+---
+layout: null
+permalink: '/widgets/v1/publication-card/'
+---
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications</title>
+
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+
+
+    <!-- JavaScript files -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+        integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+        crossorigin="anonymous"></script>
+</head>
+
+<body data-bs-theme="light">
+    <div class="my-1 p-3 pb-4 publication-card d-none">
+        <div class="row g-0">
+            <div class="container">
+                <div class="clearfix">
+                    <div class="row pt-2">
+                        <div class="col d-flex flex-wrap">
+                            <b><span class="text-primary research-title">{{ title }}</span></b><br>
+                        </div>
+                    </div>
+                    <div class="research-authors">{{ author(s) }}</div>
+                    <i class="research-venue">{{ venue }}</i>, <span class="research-year">{{ year }}</span><br>
+                    <span>doi: <a class="text-muted research-doi" href="#" target="_blank">{{ doi }}</a></span>
+                </div>
+
+                <div class="row pt-2">
+                    <div class="col d-flex flex-wrap research-links">{{ link(s) }}</div>
+                    <div class="mt-2 research-tags">{{ tags }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="publication-error d-none">
+        <div class="text-center alert alert-warning m-2">
+            An error occured while loading the publication information !
+        </div>
+    </div>
+</body>
+
+<script>
+    $(document).ready(() => {
+        const API_BASE = 'https://api.ce.pdn.ac.lk/publications/v1';
+        const params = new URLSearchParams(location.search);
+        const doi = params.get('doi').replace("https://doi.org/", "");
+        const theme = params.get('theme') || 'light';
+        const url = `${API_BASE}/${doi}`
+
+        if (theme == 'dark') {
+            $(document.body).attr("data-bs-theme", "dark");
+        } else if (theme == 'light') {
+            $(document.body).attr("data-bs-theme", "light");
+        } else {
+            // Default theme 
+            $(document.body).attr("data-bs-theme", "light");
+
+            // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            //     $(document.body).attr("data-bs-theme", "dark");
+            // } else {
+            //     $(document.body).attr("data-bs-theme", "light");
+            // }
+        }
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (data) {
+                console.log(url, data);
+
+                $('title').html(data.title);
+                $('.research-title').html(data.title);
+                $('.research-venue').html(data.venue);
+                $('.research-year').html(data.year);
+
+                $('.research-doi').html(doi).attr('href', 'https://doi.org/' + doi);
+
+                if (data.pdf_url != '#') {
+                    $('.research-links').append(`<a class="btn-link me-2" href="${data.pdf_url}" target="_blank">[ PDF ]</a>`);
+                }
+                if (data.preprint_url != '#') {
+                    $('.research-links').append(`<a class="btn-link me-2" href="${data.preprint_url}" target="_blank">[ PDF (Preprint) ]</a>`);
+                }
+                if (data.presentation_url != '#') {
+                    $('.research-links').append(`<a class="btn-link me-2" href="${data.presentation_url}" target="_blank">[ Presentation ]</a>`);
+                }
+                if (data.project_url != '#') {
+                    $('.research-links').append(`<a class="btn-link me-2" href="${data.project_url}" target="_blank">[ Project ]</a>`);
+                }
+                if (data.codebase != '#') {
+                    $('.research-links').append(`<a class="btn-link me-2" href="${data.codebase}" target="_blank">[ Codebase ]</a>`);
+                }
+
+                // Research Tags
+                const tags = (data.tags.lenght > 0) && data.tags.map((tag) => {
+                    return `<span class="me-2 badge rounded-pill bg-secondary">${tag}</span>`;
+                }).reduce((obj, current) => {
+                    return obj + '\n' + current;
+                })
+                $('.research-tags').html(tags);
+
+                // Research Authors
+                const authors = data.author_info.map((author) => {
+                    if (author.profile_url == '#') {
+                        return `<span class="me-1">${author.name}</span>`;
+                    } else {
+                        return `<a class="text-decoration-none" href="${author.profile_url}" target="_blank">${author.name}</a>`;
+                    }
+                }).reduce((obj, current) => {
+                    return obj + ', ' + current;
+                })
+                $('.research-authors').html(authors);
+
+                // Show the content if every condition satisfied 
+                if (data.title != '' && data.venue != '' && data.year != '' && data.author_info) {
+                    $('.publication-card').removeClass('d-none');
+                } else {
+                    console.error("Incompleted information !")
+                    $('.publication-error').removeClass('d-none');
+                }
+
+
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                // Handle errors
+                console.log(textStatus, errorThrown);
+                $('.publication-error').removeClass('d-none');
+            }
+        });
+
+    });
+</script>
+
+<noscript>
+    <!-- Not supported.  -->
+</noscript>
+
+</html>
