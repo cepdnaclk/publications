@@ -13,21 +13,22 @@ permalink: '/widgets/v1/publication-card/'
     <title>Publications</title>
 
     <!-- Stylesheets -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+
 
     <!-- JavaScript files -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+        integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
         crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body data-bs-theme="light">
     <div class="my-1 p-3 pb-4 publication-card d-none">
         <div class="row g-0">
             <div class="container">
@@ -48,6 +49,13 @@ permalink: '/widgets/v1/publication-card/'
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="publication-error d-none">
+        <div class="text-center alert alert-warning m-2">
+            An error occured while loading the publication information !
+        </div>
+    </div>
 </body>
 
 <script>
@@ -55,7 +63,23 @@ permalink: '/widgets/v1/publication-card/'
         const API_BASE = 'https://api.ce.pdn.ac.lk/publications/v1';
         const params = new URLSearchParams(location.search);
         const doi = params.get('doi')
+        const theme = params.get('theme') || 'light';
         const url = `${API_BASE}/${doi}`
+
+        if (theme == 'dark') {
+            $(document.body).attr("data-bs-theme", "dark");
+        } else if (theme == 'light') {
+            $(document.body).attr("data-bs-theme", "light");
+        } else {
+            // Default theme 
+            $(document.body).attr("data-bs-theme", "light");
+
+            // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            //     $(document.body).attr("data-bs-theme", "dark");
+            // } else {
+            //     $(document.body).attr("data-bs-theme", "light");
+            // }
+        }
 
         $.ajax({
             url: url,
@@ -67,7 +91,6 @@ permalink: '/widgets/v1/publication-card/'
                 $('.research-title').html(data.title);
                 $('.research-venue').html(data.venue);
                 $('.research-year').html(data.year);
-
 
                 $('.research-doi').html(doi).attr('href', 'https://doi.org/' + doi);
 
@@ -107,13 +130,20 @@ permalink: '/widgets/v1/publication-card/'
                 })
                 $('.research-authors').html(authors);
 
-                // Show the content 
-                $('.publication-card').removeClass('d-none');
+                // Show the content if every condition satisfied 
+                if (data.title != '' && data.venue != '' && data.year != '' && data.author_info) {
+                    $('.publication-card').removeClass('d-none');
+                } else {
+                    console.error("Incompleted information !")
+                    $('.publication-error').removeClass('d-none');
+                }
+
 
             },
             error: function (xhr, textStatus, errorThrown) {
                 // Handle errors
                 console.log(textStatus, errorThrown);
+                $('.publication-error').removeClass('d-none');
             }
         });
 
