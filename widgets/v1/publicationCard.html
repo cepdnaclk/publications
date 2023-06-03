@@ -35,17 +35,17 @@ permalink: '/widgets/v1/publication-card/'
                 <div class="clearfix">
                     <div class="row pt-2">
                         <div class="col d-flex flex-wrap">
-                            <b><span class="text-primary research-title"></span></b><br>
+                            <b><span class="text-primary research-title">{{ title }}</span></b><br>
                         </div>
                     </div>
-                    <div class="research-authors"></div>
-                    <i class="research-venue"></i>, <span class="research-year"></span><br>
-                    <span>doi: <a class="text-muted research-doi" href="#" target="_blank"></a></span>
+                    <div class="research-authors">{{ author(s) }}</div>
+                    <i class="research-venue">{{ venue }}</i>, <span class="research-year">{{ year }}</span><br>
+                    <span>doi: <a class="text-muted research-doi" href="#" target="_blank">{{ doi }}</a></span>
                 </div>
 
                 <div class="row pt-2">
-                    <div class="col d-flex flex-wrap research-links"></div>
-                    <div class="mt-2 research-tags"></div>
+                    <div class="col d-flex flex-wrap research-links">{{ link(s) }}</div>
+                    <div class="mt-2 research-tags">{{ tags }}</div>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@ permalink: '/widgets/v1/publication-card/'
     $(document).ready(() => {
         const API_BASE = 'https://api.ce.pdn.ac.lk/publications/v1';
         const params = new URLSearchParams(location.search);
-        const doi = params.get('doi')
+        const doi = params.get('doi').replace("https://doi.org/", "");
         const theme = params.get('theme') || 'light';
         const url = `${API_BASE}/${doi}`
 
@@ -111,7 +111,7 @@ permalink: '/widgets/v1/publication-card/'
                 }
 
                 // Research Tags
-                const tags = data.tags.map((tag) => {
+                const tags = (data.tags.lenght > 0) && data.tags.map((tag) => {
                     return `<span class="me-2 badge rounded-pill bg-secondary">${tag}</span>`;
                 }).reduce((obj, current) => {
                     return obj + '\n' + current;
